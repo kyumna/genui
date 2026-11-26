@@ -7,6 +7,12 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const isMock = !API_URL;
 
+/** Pings the back end so a sleeping free-tier host starts waking up early. */
+export function warmUp(): void {
+  if (!API_URL) return;
+  fetch(`${API_URL}/health`, { cache: "no-store" }).catch(() => {});
+}
+
 export type StreamEvent =
   | { type: "text"; delta: string }
   | { type: "reset" }

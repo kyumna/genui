@@ -8,7 +8,7 @@ import { Landing } from "@/components/chat/Landing";
 import type { AssistantMessage, Message } from "@/components/chat/types";
 import type { UINode } from "@/components/gen/schema";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { isMock, saveLayout, streamGenerate } from "@/lib/api";
+import { isMock, saveLayout, streamGenerate, warmUp } from "@/lib/api";
 
 const uid = () => Math.random().toString(36).slice(2, 10);
 
@@ -27,6 +27,10 @@ export function Playground() {
   const [openId, setOpenId] = useState<string | null>(null);
   const abortRef = useRef<AbortController | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    warmUp();
+  }, []);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ block: "end" });
