@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# genui (front end)
 
-## Getting Started
+Describe an interface in plain words and genui builds it as a real, interactive UI. A free LLM returns a validated JSON component tree, and this Next.js app renders it with a fixed set of safe components.
 
-First, run the development server:
+**Live demo:** <add your Vercel URL>
+**Back end:** [genui-backend](https://github.com/kyumna/genui-backend)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+<!-- Add screenshots here: landing page, chat with the UI panel open, a shared page -->
+
+## How it works
+
+```
+prompt -> FastAPI -> Gemini / Groq -> JSON tree -> validate -> SSE stream
+                                                                 |
+                  Next.js: zod check -> component registry -> React UI
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **No generated code is ever executed.** The model only returns data: `{ type, props, children }`.
+- **Allow-listed components:** Stack, Grid, Card, Heading, Text, Stat, Table, Chart, Slider, Tabs. Unknown types and invalid props are not rendered.
+- **Safe styling:** the AI can pick colors from a named palette or `#rrggbb`. Nothing else reaches CSS.
+- **Streaming:** a short description streams in first, then the UI appears as a card that opens in a side panel.
+- **Save and share:** each UI can be saved to Postgres (Neon) and opened at `/u/<slug>`.
+- **Export:** download any UI as a standalone HTML file.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Run locally
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm install
+# create .env.local first (see below)
+npm run dev
+```
 
-## Learn More
+`.env.local`:
 
-To learn more about Next.js, take a look at the following resources:
+```
+NEXT_PUBLIC_API_URL=http://localhost:8000
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Without `NEXT_PUBLIC_API_URL` the app runs in preview mode with a canned response. Start the back end from the [genui-backend](https://github.com/kyumna/genui-backend) repo for real generation.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Scripts
 
-## Deploy on Vercel
+| Command | What it does |
+| --- | --- |
+| `npm run dev` | Start the dev server |
+| `npm run build` | Production build |
+| `npm run lint` | ESLint |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Stack
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Next.js 16, React 19, Tailwind CSS 4, zod, Recharts. Hosted on Vercel.
