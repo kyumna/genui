@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Render } from "@/components/gen/Render";
 import type { UINode } from "@/components/gen/schema";
+import { downloadHtml } from "@/lib/export-html";
 
 type Props = {
   title: string;
@@ -51,6 +52,13 @@ export function ArtifactPanel({ title, ui, slug, onShare, onClose }: Props) {
           <p className="text-xs text-muted-foreground">Interface</p>
         </div>
         <div className="flex shrink-0 items-center gap-2">
+          <button
+            type="button"
+            onClick={() => downloadHtml(ui, title)}
+            className="rounded-lg border border-border bg-card px-3 py-1.5 text-sm font-medium transition-colors hover:bg-muted"
+          >
+            Download HTML
+          </button>
           {onShare ? (
             <button
               type="button"
