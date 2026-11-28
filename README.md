@@ -2,7 +2,7 @@
 
 Describe an interface in plain words and genui builds it as a real, interactive UI. A free LLM returns a validated JSON component tree, and this Next.js app renders it with a fixed set of safe components.
 
-**Live demo:** <add your Vercel URL>
+**Live demo:** https://genui-red-beta.vercel.app/
 **Back end:** [genui-backend](https://github.com/kyumna/genui-backend)
 
 <!-- Add screenshots here: landing page, chat with the UI panel open, a shared page -->
